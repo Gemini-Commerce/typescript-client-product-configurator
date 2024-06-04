@@ -12,58 +12,75 @@
  * Do not edit the class manually.
  */
 
+
+import type { Configuration } from './configuration';
+// Some imports not used depending on template conditions
+// @ts-ignore
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
+import globalAxios from 'axios';
+
+export const BASE_PATH = "https://product-configurator.api.gogemini.io".replace(/\/+$/, "");
+
 /**
- * 
+ *
  * @export
- * @interface ProductconfiguratoroptionEntity
  */
-export interface ProductconfiguratoroptionEntity {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'grn'?: string;
-    /**
-     * 
-     * @type {LocalisationLocalizedText}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'label'?: LocalisationLocalizedText;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'position'?: string;
-    /**
-     * 
-     * @type {OptionSwatch}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'swatch'?: OptionSwatch;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'externalReferenceId'?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'createdAt'?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ProductconfiguratoroptionEntity
-     */
-    'updatedAt'?: Date;
+export const COLLECTION_FORMATS = {
+    csv: ",",
+    ssv: " ",
+    tsv: "\t",
+    pipes: "|",
+};
+
+/**
+ *
+ * @export
+ * @interface RequestArgs
+ */
+export interface RequestArgs {
+    url: string;
+    options: RawAxiosRequestConfig;
+}
+
+/**
+ *
+ * @export
+ * @class BaseAPI
+ */
+export class BaseAPI {
+    protected configuration: Configuration | undefined;
+
+    constructor(configuration?: Configuration, protected basePath: string = BASE_PATH, protected axios: AxiosInstance = globalAxios) {
+        if (configuration) {
+            this.configuration = configuration;
+            this.basePath = configuration.basePath ?? basePath;
+        }
+    }
+};
+
+/**
+ *
+ * @export
+ * @class RequiredError
+ * @extends {Error}
+ */
+export class RequiredError extends Error {
+    constructor(public field: string, msg?: string) {
+        super(msg);
+        this.name = "RequiredError"
+    }
+}
+
+interface ServerMap {
+    [key: string]: {
+        url: string,
+        description: string,
+    }[];
+}
+
+/**
+ *
+ * @export
+ */
+export const operationServerMap: ServerMap = {
 }
